@@ -63,13 +63,12 @@ def load_model():
     return model
 
 ############################################
-st.title('Flight Cost Prediction for India')
-st.markdown('In this Streamlit app, we perform EDA on a [dataset](https://github.com/rukshar69/Flight-Price-Prediction/blob/main/Flight%20Dataset/Data_Train.xlsx) containing *Indian* flight info. such as: source, destination,\
-         arrival, departure, duration time, intermediate stoppage, price of ticket, etc. We have trained a **[RandomForestRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html)** using this data\
-         and the model predicts the **price** of a ticket after providing information about the flight.')
+st.title('Prediksi Biaya Penerbangan Ke INDIA')
+st.markdown('Dalam aplikasi Streamlit ini, adalah penghitungan info penerbangan India seperti: asal, tujuan, kedatangan, keberangkatan, durasi waktu, pemberhentian antara, harga tiket, dll.\
+             Dan telah melatih RandomForestRegressor menggunakan data ini dan model tersebut memprediksi harga tiket setelah memberikan informasi tentang penerbangan.')
 
-options = ['EDA', 'Model Prediction']
-choice = st.selectbox('Select an option', options)
+options = ['Model Prediction']
+choice = st.selectbox('Pilih Opsi', options)
 
 
 #choice = 'EDA'
@@ -150,80 +149,79 @@ if choice == 'EDA':
         st.plotly_chart(fig)
 
 elif choice == 'Model Prediction':
-    st.header('Model Description and Prediction')
-    with st.expander("Input features and Output"):
+    st.header('Model Deskripsi dan Prediksi')
+    with st.expander("Fitur Input dan Output"):
 
-        st.markdown('Here we train a **Random Forest Regressor** model with **Price** as the target variable using the\
-                    following input features:')
+        st.markdown('Di sini melatih model **Random Forest Regressor** dengan **Harga** sebagai variabel target menggunakan fitur input berikut:')
         
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown('- Arrival time');st.markdown('- Departure time'); st.markdown('- Flight Duration')
+            st.markdown('- Waktu Kedatangan');st.markdown('- Waktu Keberangkatan'); st.markdown('- Durasi Penerbangan')
         with col2:
-            st.markdown('- Total stops');st.markdown('- Airline'); st.markdown('- Source'); st.markdown('- Destination')
+            st.markdown('- Total berhenti');st.markdown('- Pesawat'); st.markdown('- Sumber'); st.markdown('- Destinasi')
 
-    with st.expander('Feature Importance'):
+    with st.expander('Fitur'):
         image = Image.open('images/feature_importance.png')
-        st.image(image, caption='Feature Importance for Flight Price Prediction')
-        st.markdown('- We have used [ExtraTreeRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html) to \
-                    determine this chart of feature importance')
-        st.markdown('- Total_stops is the feature with the highest feature importance in deciding the Price')
-        st.markdown('- After that Journey Day(date of departure) also plays a big role in deciding the Price. Prices are generally higher on weekends.')
+        st.image(image, caption='Pentingnya Fitur untuk Prediksi Harga Tiket Pesawat')
+        st.markdown('- Dengan menggunakan [ExtraTreeRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html) untuk \
+                    menentukan bagan pentingnya fitur ini')
+        st.markdown('- Total_stops adalah fitur dengan kepentingan fitur tertinggi dalam menentukan Harga')
+        st.markdown('- Setelah itu, Hari Perjalanan (tanggal keberangkatan) juga berperan besar dalam menentukan Harga. Harga umumnya lebih tinggi di akhir pekan.')
 
-    with st.expander('Hyperparameter Tuning'):
-        st.markdown('We have performed *Hyperparameter Tuning* using [RandomizedSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html).\
-                    RandomizedSearchCV also performs *k-fold cross validation*. The following hyperparameters were tuned:')
-        st.markdown('- n_estimators: Number of trees in random forest')
-        st.markdown('- max_features: Number of features to consider at every split')
-        st.markdown('- max_depth: Maximum number of levels in tree')
-        st.markdown('- min_samples_split: Minimum number of samples required to split a node')
-        st.markdown('- min_samples_leaf: Minimum number of samples required at each leaf node')
-        st.markdown('The best hyperparameters:')
+    with st.expander('Penyetelan Hiperparameter'):
+        st.markdown('Menampilkan *Penyetelan Hyperparameter* menggunakan [RandomizedSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html).\
+                    RandomizedSearchCV juga menampilkan *k-fold cross validation*. Hiperparameter berikut ini disetel:')
+        st.markdown('- n_estimators: Jumlah pohon di random forest')
+        st.markdown('- max_features: Jumlah fitur yang perlu dipertimbangkan di setiap split')
+        st.markdown('- max_depth: Jumlah level maksimum dalam pohon')
+        st.markdown('- min_samples_split: Jumlah sampel minimum yang diperlukan untuk membagi node')
+        st.markdown('- min_samples_leaf: Jumlah sampel minimum yang diperlukan pada setiap simpul daun')
+        st.markdown('Hiperparameter terbaik:')
         st.write({'n_estimators': 700,
                     'min_samples_split': 15,
                     'min_samples_leaf': 1,
                     'max_features': 'auto',
                     'max_depth': 20})
         
-    with st.expander('Results on Test Data'):
+    with st.expander('Hasil Data Uji'):
         image = Image.open('images/residual_price.png')
-        st.image(image, caption='Residual price(difference between prediction and actual price) vs frequency')
-        st.markdown('As we can see that most of the residuals are 0, which means our model is *generalizing well*.')
+        st.image(image, caption='Harga residual (selisih antara harga prediksi dan harga aktual) vs frekuensi')
+        st.markdown('Seperti yang kita lihat bahwa sebagian besar residualnya adalah 0, yang berarti model kita adalah *menggeneralisasi dengan baik*.')
         image = Image.open('images/scatter_plot_pred_truth.png')
-        st.image(image, caption='Scatter plot prediction vs true prices of flights')
-        st.markdown('Ideally, it should be a straight line but I guess this is close enough')
+        st.image(image, caption='Prediksi diagram sebaran vs harga tiket pesawat sebenarnya')
+        st.markdown('Idealnya, garisnya harus lurus, tapi saya rasa ini sudah cukup dekat')
         st.markdown('r2 score:  :green[0.80880667420437]')
 
-    st.write('### Flight Price Prediction:')
+    st.write('### Prediksi Harga Tiket Pesawat :')
     with st.form("Flight_prediction_form"):
         st.write("Provide Inputs")
         col1, col2 = st.columns(2)
         with col1:
             sources = ['Delhi', 'Kolkata', 'Banglore', 'Mumbai', 'Chennai']
-            src_choice = st.selectbox('Source', sources)
+            src_choice = st.selectbox('Sumber', sources)
 
             destinations = ['Cochin',  'Banglore', 'Delhi','Hyderabad', 'Kolkata',]
-            dest_choice = st.selectbox('Destination', destinations)
+            dest_choice = st.selectbox('Destinasi', destinations)
 
             stops = [0,1,2,3,4]
-            stop_choice = st.selectbox('No. of Stops', stops)
+            stop_choice = st.selectbox('No. Pemberhentian', stops)
 
             airlines = ['Jet Airways', 'IndiGo', 'Air India',
             'Multiple carriers', 'SpiceJet', 'Vistara',
             'GoAir', 'Multiple carriers Premium economy',
             'Jet Airways Business', 'Vistara Premium economy',
             'Trujet']
-            airline_choice = st.selectbox('Which Airline?', airlines)
+            airline_choice = st.selectbox('Pilih Maskapai', airlines)
 
         with col2:
             today = datetime.date.today()
-            departure_date = st.date_input('Departure date', today)
-            departure_time = st.time_input('Departure time', datetime.time(8, 45))
+            departure_date = st.date_input('Tanggal Berangkat', today)
+            departure_time = st.time_input('Waktu Berangkat', datetime.time(8, 45))
 
             today = datetime.date.today()
-            arrival_date = st.date_input('Arrival date', today)
-            arrival_time = st.time_input('Arrival time', datetime.time(8, 45))
+            arrival_date = st.date_input('Tanggal Sampai', today)
+            arrival_time = st.time_input('Waktu Sampai', datetime.time(8, 45))
         
         # Every form must have a submit button.
         submitted = st.form_submit_button("Submit")
